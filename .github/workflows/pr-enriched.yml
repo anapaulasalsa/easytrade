@@ -46,7 +46,7 @@ jobs:
                 \"application:EasyTrade\",
                 \"app:EasyTradee\",
                 \"stage:${STAGE}\",
-                \"EAMS_ID:PDP373\"
+                \"EAMS_ID:easytravel\"
               ],
               \"vcs.change.id\": \"${{ github.event.pull_request.number }}\",
               \"vcs.change.title\": \"${{ github.event.pull_request.title }}\",
