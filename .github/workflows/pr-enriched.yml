@@ -46,7 +46,7 @@ jobs:
                 \"application:EasyTravel\",
                 \"app:EasyTravel\",
                 \"stage:${STAGE}\",
-                \"EAMS_ID:12345\",
+                \"EAMS_ID:123456\",
                 \"DT_CLUSTER_ID:12345\"
               ],
               \"vcs.change.id\": \"${{ github.event.pull_request.number }}\",
