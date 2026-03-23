@@ -29,7 +29,7 @@ jobs:
           BASE_SHA="${{ github.event.pull_request.base.sha }}"
           REPO_URL="https://github.com/${{ github.repository }}"
       
-          curl -X POST "https://esa3431h.sprint.dynatracelabs.com/platform/ingest/custom/events.sdlc/github" \
+          curl -X POST "https://fzu06327.live.dynatrace.com/platform/ingest/custom/events.sdlc/github" \
             -H "Authorization: Api-Token ${{ secrets.DT_API_TOKEN }}" \
             -H "Content-Type: application/json" \
             -d "[
@@ -45,7 +45,7 @@ jobs:
               \"task.labels\": [
                 \"application:EasyTravel\",
                 \"stage:${STAGE}\",
-                \"EAMS_ID:easytravel\",
+                \"EAMS_ID:12345\",
                 \"DT_CLUSTER_ID:12345\"
               ],
               \"vcs.change.id\": \"${{ github.event.pull_request.number }}\",
