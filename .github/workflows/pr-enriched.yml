@@ -10,7 +10,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
+      - name: Get files changed
+        run: |
+            git fetch origin ${{ github.base_ref }}
+            CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+            echo "changed=$CHANGED_FILES" >> $GITHUB_ENV
+          
       - name: Determine Stage
         run: |
           if [[ "${{ github.base_ref }}" == "main" ]]; then
@@ -46,7 +51,8 @@ jobs:
                 \"application:EasyTravel\",
                 \"stage:${STAGE}\",
                 \"EAMS_ID:12345\",
-                \"DT_CLUSTER_ID:12345\"
+                \"DT_CLUSTER_ID:12345\",
+                \"changed_files:${CHANGED_FILES}\"
               ],
               \"vcs.change.id\": \"${{ github.event.pull_request.number }}\",
               \"vcs.change.title\": \"${{ github.event.pull_request.title }}\",
