@@ -56,7 +56,6 @@ jobs:
                 \"application:EasyTraveel\",
                 \"stage:${STAGE}\",
                 \"EAMS_ID:easytravel\",
-                \"DT_CLUSTER_ID:\",
                 \"changed_files:${CHANGED_FILES}\"
               ],
               \"vcs.change.id\": \"${{ github.event.pull_request.number }}\",
