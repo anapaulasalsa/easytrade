@@ -3,6 +3,7 @@ name: Dynatrace SDLC Ingest
 on:
   workflow_run:
     types: [requested, completed]
+
   pull_request:
     types: [opened, closed, reopened, synchronize]
 
@@ -12,20 +13,24 @@ jobs:
     if: github.actor != 'github-actions[bot]'
 
     steps:
+
+
       - name: Get workflow jobs
         if: github.event_name == 'workflow_run'
         run: |
           curl -s \
             -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            "https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}/jobs" \
+            https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.event.workflow_run.id }}/jobs \
             > jobs.json
 
-      - name: Send workflow job events
+
+      - name: Send workflow_job events (webhook-like)
         if: github.event_name == 'workflow_run'
         run: |
           jq -c '.jobs[]' jobs.json | while read job; do
+
             STATUS=$(echo "$job" | jq -r '.status')
-            
+
             if [[ "$STATUS" == "completed" ]]; then
               ACTION="completed"
             elif [[ "$STATUS" == "in_progress" ]]; then
@@ -33,7 +38,7 @@ jobs:
             else
               ACTION="queued"
             fi
-            
+
             PAYLOAD=$(jq -n \
               --arg action "$ACTION" \
               --argjson job "$job" \
@@ -42,16 +47,23 @@ jobs:
               '{
                 action: $action,
                 workflow_job: $job,
-                repository: { full_name: $repo },
-                sender: { login: $sender }
-              }')
-            
+                repository: {
+                  full_name: $repo
+                },
+                sender: {
+                  login: $sender
+                }
+              }'
+            )
+
             curl -X POST "https://esa3431h.sprint.dynatracelabs.com/platform/ingest/custom/events.sdlc/github" \
               -H "Authorization: Api-Token ${{ secrets.DT_API_TOKEN }}" \
               -H "Content-Type: application/json" \
               -H "X-GitHub-Event: workflow_job" \
               -d "$PAYLOAD"
+
           done
+
 
       - name: Send workflow_run event
         if: github.event_name == 'workflow_run'
@@ -61,6 +73,7 @@ jobs:
             -H "Content-Type: application/json" \
             -H "X-GitHub-Event: workflow_run" \
             -d '${{ toJson(github.event) }}'
+
 
       - name: Send pull_request event
         if: github.event_name == 'pull_request'
