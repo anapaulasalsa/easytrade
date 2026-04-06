@@ -9,28 +9,7 @@ jobs:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          
-      - name: Get files changed
-        run: |
-          git fetch origin ${{ github.base_ref }}
-          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
-          echo "changed=$CHANGED_FILES" >> $GITHUB_ENV
-        
-      - name: Determine Stage
-        run: |
-          if [[ "${{ github.base_ref }}" == "main" ]]; then
-            echo "STAGE=prod" >> $GITHUB_ENV
-          elif [[ "${{ github.base_ref }}" == "preprod" ]]; then
-            echo "STAGE=preprod" >> $GITHUB_ENV
-          else
-            echo "STAGE=dev" >> $GITHUB_ENV
-          fi
-
+    steps: 
       - name: Send Enriched Event
         run: |
       
@@ -53,10 +32,9 @@ jobs:
               \"task.id\": \"${{ github.event.pull_request.id }}\",
               \"task.title\": \"[Change Request] Enriched ${{ github.event.pull_request.title }}\",
               \"task.labels\": [
-                \"application:EasyTraveel\",
-                \"stage:${STAGE}\",
+                \"application:EasyTravel\",
                 \"EAMS_ID:easytravel\",
-                \"changed_files:${CHANGED_FILES}\"
+                \"DT_CLUSTER_ID:12345\"
               ],
               \"vcs.change.id\": \"${{ github.event.pull_request.number }}\",
               \"vcs.change.title\": \"${{ github.event.pull_request.title }}\",
