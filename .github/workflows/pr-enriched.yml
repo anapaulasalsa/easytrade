@@ -34,7 +34,7 @@ jobs:
               \"task.labels\": [
                 \"application:EasyTravel\",
                 \"EAMS_ID:easytravel\",
-                \"DT_CLUSTER_ID:12345\"
+                \"DT_CLUSTER_ID: \"
               ],
               \"vcs.change.id\": \"${{ github.event.pull_request.number }}\",
               \"vcs.change.title\": \"${{ github.event.pull_request.title }}\",
