@@ -12,7 +12,7 @@ jobs:
     steps: 
       - name: Send Enriched Event
         run: |
-      
+          EAMS_ID="77777"
           START_TIME="${{ github.event.pull_request.created_at }}"
           END_TIME="${{ github.event.pull_request.merged_at }}"
           BASE_SHA="${{ github.event.pull_request.base.sha }}"
@@ -23,6 +23,7 @@ jobs:
             -H "Content-Type: application/json" \
             -d "[
             {
+              \"eams_id\": \"${EAMS_ID}\",
               \"event.kind\": \"SDLC_EVENT\",
               \"event.provider\": \"github.com\",
               \"event.category\": \"task\",
@@ -33,7 +34,7 @@ jobs:
               \"task.title\": \"[Change Request] Enriched ${{ github.event.pull_request.title }}\",
               \"task.labels\": [
                 \"application:EasyTravelapp\",
-                \"EAMS_ID:easytravel\",
+                \"EAMS_ID:${EAMS_ID}\",
                 \"DT_CLUSTER_ID:  \"
               ],
               \"vcs.change.id\": \"${{ github.event.pull_request.number }}\",
