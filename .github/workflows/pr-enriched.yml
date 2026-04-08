@@ -32,7 +32,7 @@ jobs:
               \"task.id\": \"${{ github.event.pull_request.id }}\",
               \"task.title\": \"[Change Request] Enriched ${{ github.event.pull_request.title }}\",
               \"task.labels\": [
-                \"application:EasyTravel app\",
+                \"application:EasyTravelapp\",
                 \"EAMS_ID:easytravel\",
                 \"DT_CLUSTER_ID:  \"
               ],
