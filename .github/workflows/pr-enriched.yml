@@ -12,7 +12,7 @@ jobs:
     steps: 
       - name: Send Enriched Event
         run: |
-          EAMS_ID="777777"
+          EAMS_ID="auto_easyTravelEnv"
           START_TIME="${{ github.event.pull_request.created_at }}"
           END_TIME="${{ github.event.pull_request.merged_at }}"
           BASE_SHA="${{ github.event.pull_request.base.sha }}"
